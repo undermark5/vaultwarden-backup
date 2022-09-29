@@ -13,13 +13,12 @@ FROM rclone/rclone:1.59.2 AS image-linux-armv7
 # for linux/arm/v6 platform
 FROM alpine:3.15 AS image-linux-armv6
 
-RUN apk add --no-cache ca-certificates fuse
-RUN echo "user_allow_other" >> /etc/fuse.conf
-RUN wget https://downloads.rclone.org/v1.59.2/rclone-v1.59.2-linux-arm.zip -O /rclone-linux-arm.zip
-RUN unzip /rclone-linux-arm.zip -j -d /rclone-linux-arm
-RUN cp /rclone-linux-arm/rclone /usr/local/bin/
-RUN rm -rf /rclone-linux-arm.zip /rclone-linux-arm
-RUN rclone --help
+RUN apk add --no-cache ca-certificates fuse \
+  && echo "user_allow_other" >> /etc/fuse.conf \
+  && wget https://downloads.rclone.org/v1.59.2/rclone-v1.59.2-linux-arm.zip -O /rclone-linux-arm.zip \
+  && unzip /rclone-linux-arm.zip -j -d /rclone-linux-arm \
+  && cp /rclone-linux-arm/rclone /usr/local/bin/ \
+  && rm -rf /rclone-linux-arm.zip /rclone-linux-arm \
 
 ENV XDG_CONFIG_HOME="/config"
 
