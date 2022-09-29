@@ -1,30 +1,18 @@
 # for linux/amd64 platform
 FROM rclone/rclone:1.59.2 AS image-linux-amd64
 
-
-# for linux/arm64 platform
-FROM rclone/rclone:1.59.2 AS image-linux-arm64
-
-
-# for linux/arm/v7 platform
-FROM rclone/rclone:1.59.2 AS image-linux-armv7
-
-
-# for linux/arm/v6 platform
-FROM alpine:3.15 AS image-linux-armv6
-
 RUN apk add --no-cache ca-certificates fuse \
   && echo "user_allow_other" >> /etc/fuse.conf \
   && wget https://downloads.rclone.org/v1.59.2/rclone-v1.59.2-linux-arm.zip -O /rclone-linux-arm.zip \
   && unzip /rclone-linux-arm.zip -j -d /rclone-linux-arm \
   && cp /rclone-linux-arm/rclone /usr/local/bin/ \
-  && rm -rf /rclone-linux-arm.zip /rclone-linux-arm \
+  && rm -rf /rclone-linux-arm.zip /rclone-linux-arm
 
 ENV XDG_CONFIG_HOME="/config"
 
 
 # main
-FROM image-${TARGETOS}-${TARGETARCH}${TARGETVARIANT}
+FROM image-linux-amd64
 
 LABEL "repository"="https://github.com/undermark5/vaultwarden-backup" \
   "homepage"="https://github.com/undermark5/vaultwarden-backup" \
@@ -36,7 +24,7 @@ ARG USER_ID="1100"
 ENV LOCALTIME_FILE="/tmp/localtime"
 
 COPY scripts/*.sh /app/
-COPY docker.sh/docker.sh /app/
+COPY discord.sh/discord.sh /app/
 
 RUN chmod +x /app/*.sh \
   && mkdir -m 777 /bitwarden \
