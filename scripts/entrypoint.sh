@@ -26,6 +26,14 @@ if [[ "$1" == "mail" ]]; then
     exit 0
 fi
 
+if [[ "$1" == "discord" ]]; then
+    export_env_file
+
+    send_discord_test
+
+    exit 0
+fi
+
 # restore
 if [[ "$1" == "restore" ]]; then
     . /app/restore.sh

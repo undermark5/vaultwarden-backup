@@ -142,6 +142,35 @@ function send_ping() {
     fi
 }
 
+function send_discord_webhook() {
+    if [[ -z "${WEBHOOLK_URL}" ]]; then
+        return
+    fi
+
+    if [[ -z "${DISCORD_WEBHOOK}" ]]; then
+        return
+    fi
+
+    local ERROR=$1
+    if [[ -z "$1" ]]; then
+        /app/discord.sh --username "Vaultwarden Backup Bot" --discription "Vaultwarden Backup Run Complete" --color "0x0d691a" --field "Status;Success;false"
+    else
+        /app/discord.sh --username "Vaultwarden Backup Bot" --discription "Vaultwarden Backup Run Complete" --color "0x69130d" --field "Status;Failed;false" --field "Error;$1"
+    fi
+}
+
+function send_discord_test() {
+    if [[ -z "${WEBHOOLK_URL}" ]]; then
+        return
+    fi
+
+    if [[ -z "${DISCORD_WEBHOOK}" ]]; then
+        return
+    fi
+
+    /app/discord.sh --username "Vaultwarden Backup Bot" --discription "Vaultwarden Webhook Test" --color "0x0d691a" --field "Status;Test Success;false"
+}
+
 ########################################
 # Export variables from .env file.
 # Arguments:

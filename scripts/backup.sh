@@ -129,6 +129,7 @@ function upload() {
         color red "upload file not found"
 
         send_mail_content "FALSE" "File upload failed at $(date +"%Y-%m-%d %H:%M:%S %Z"). Reason: Upload file not found."
+        send_discord_webhook "File upload failed at $(date +"%Y-%m-%d %H:%M:%S %Z"). Reason: Upload file not found."
 
         exit 1
     fi
@@ -150,7 +151,7 @@ function upload() {
 
     if [[ "${HAS_ERROR}" == "TRUE" ]]; then
         send_mail_content "FALSE" "File upload failed at $(date +"%Y-%m-%d %H:%M:%S %Z")."
-
+        send_discord_webhook "File upload failed at $(date +"%Y-%m-%d %H:%M:%S %Z")."
         exit 1
     fi
 }
@@ -190,6 +191,7 @@ clear_dir
 clear_history
 
 send_mail_content "TRUE" "The file was successfully uploaded at $(date +"%Y-%m-%d %H:%M:%S %Z")."
+send_discord_webhook
 send_ping
 
 color none ""
